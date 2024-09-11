@@ -1,7 +1,7 @@
 from django.shortcuts import render
 
 def product_list(request):
-    # Buat daftar produk secara manual tanpa database
+    # Daftar produk dan nama
     data = {
         'nama': 'Muhammad Rayyan Wiradana',
         'npm': '2306275342'
@@ -20,5 +20,5 @@ def product_list(request):
         }
     ]
     
-    # Tambahkan data ke context bersama dengan products
+    
     return render(request, 'main/product_list.html', {'products': products, 'data': data})
