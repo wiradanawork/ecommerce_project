@@ -4,7 +4,8 @@ def product_list(request):
     # Daftar produk dan nama
     data = {
         'nama': 'Muhammad Rayyan Wiradana',
-        'npm': '2306275342'
+        'npm': '2306275342',
+        'kelas':"c"
     }
     
     products = [
