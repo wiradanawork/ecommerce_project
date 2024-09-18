@@ -105,5 +105,12 @@ csrf_token digunakan untuk melindungi aplikasi dari serangan CSRF (Cross Site Re
 - Di dalam view add_product, saya menggunakan method is_valid() untuk memvalidasi data form. Method ini memeriksa apakah data yang dimasukkan oleh pengguna sesuai dengan aturan di model. Jika valid, data akan disimpan ke dalam database, jika tidak, pengguna diminta untuk memperbaiki input.
 
   ![Screenshot (4065)](https://github.com/user-attachments/assets/7bb9d558-a5a4-4b7f-a6d3-e19a6ba84273)
+  ![Screenshot (4066)](https://github.com/user-attachments/assets/8d99621c-224c-46bf-84e9-7092964f9094)
+  ![Screenshot (4068)](https://github.com/user-attachments/assets/45c017c1-cab0-4275-8bf0-cf8e7c8d0f97)
+  ![Screenshot (4069)](https://github.com/user-attachments/assets/e42045a4-ab86-442a-9205-ba0b975ab052)
+
+
+  
+
 
 
