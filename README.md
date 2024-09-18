@@ -104,3 +104,6 @@ csrf_token digunakan untuk melindungi aplikasi dari serangan CSRF (Cross Site Re
 - Untuk melindungi aplikasi dari serangan CSRF (Cross Site Request Forgery), saya menambahkan token CSRF di dalam form. Ini dilakukan dengan menyertakan {% csrf_token %} di dalam template add_product.html.
 - Di dalam view add_product, saya menggunakan method is_valid() untuk memvalidasi data form. Method ini memeriksa apakah data yang dimasukkan oleh pengguna sesuai dengan aturan di model. Jika valid, data akan disimpan ke dalam database, jika tidak, pengguna diminta untuk memperbaiki input.
 
+  ![Screenshot (4065)](https://github.com/user-attachments/assets/7bb9d558-a5a4-4b7f-a6d3-e19a6ba84273)
+
+
