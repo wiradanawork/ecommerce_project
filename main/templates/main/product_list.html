@@ -1,6 +1,6 @@
 <html>
 <head>
-    <title>Product List</title>
+    <title>Toko Rayyan</title>
 </head>
 <body>
     <!-- Tampilkan nama dan npm -->
@@ -8,7 +8,7 @@
     <h2>{{ data.npm }}</h2>
     <h2>{{ data.kelas }}</h2>
 
-    <h1>Available Products</h1>
+    <h1>Toko Rayyan</h1>
     <ul>
         <!-- Produk dari database -->
         {% for product in products %}
@@ -19,5 +19,8 @@
             </li>
         {% endfor %}
     </ul>
+
+    <!-- Tombol untuk menambah produk baru -->
+    <a href="{% url 'add_product' %}">Add Product</a>
 </body>
 </html>

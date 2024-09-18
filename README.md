@@ -74,3 +74,33 @@ Django menyediakan semua yang dibutuhkan untuk membangun aplikasi web, dari peng
 - Abstraksi: Django ORM menyediakan abstraksi tinggi di mana developer dapat melakukan operasi database tanpa memikirkan detail implementasi dari setiap query SQL.
 
 
+
+
+
+
+tugas 3
+
+1. Jelaskan mengapa kita memerlukan data delivery dalam pengimplementasian sebuah platform? 
+Data delivery diperlukan karena memungkinkan berbagai komponen dalam platform untuk bertukar informasi secara efisien. Hal ini mendukung fitur-fitur seperti pembaruan data secara real-time, rendering, dan interaksi antara user dan server. 
+
+2. Menurutmu, mana yang lebih baik antara XML dan JSON? Mengapa JSON lebih populer dibandingkan XML?
+Menurut saya JSON biasanya dianggap lebih baik. Hal ini karena beberapa hal:
+- JSON menggunakan format yang lebih ringkas.
+- JSON menggunakan struktur yang lebih sederhana dan mudah dipahami 
+- JSON sebenarnya adalah format text
+
+3. Jelaskan fungsi dari method is_valid() pada form Django dan mengapa kita membutuhkan method tersebut?
+Method is_valid() berfungsi untuk memeriksa apakah data yang dimasukkan ke dalam form memenuhi semua syarat validasi yang telah ditentukan. Ini penting untuk memastikan bahwa data yang diterima dan disimpan ke dalam database adalah data yang benar dan sesuai dengan aturan yang ditetapkan
+
+4.  Mengapa kita membutuhkan csrf_token saat membuat form di Django? Apa yang dapat terjadi jika kita tidak menambahkan csrf_token pada form Django? Bagaimana hal tersebut dapat dimanfaatkan oleh penyerang?
+
+csrf_token digunakan untuk melindungi aplikasi dari serangan CSRF (Cross Site Request Forgery). CSRF adalah jenis serangan di mana penyerang memanfaatkan sesi pengguna yang valid untuk melakukan tindakan yang tidak diinginkan tanpa sepengetahuan pengguna. Dengan menambahkan csrf_token, server memastikan bahwa setiap form yang dikirim berasal dari pengguna yang sah dan bukan dari sumber eksternal. Jika csrf_token tidak digunakan, penyerang dapat memanfaatkan sesi aktif pengguna untuk mengirimkan permintaan tanpa otorisasi, seperti mengubah data atau melakukan transaksi ilegal.
+
+5.  Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step (bukan hanya sekadar mengikuti tutorial).
+- Saya memulai dengan membuat forms.py. Lalu saya membuat sebuah form menggunakan Django ModelForm di forms.py. Form ini digunakan untuk memungkinkan pengguna menambahkan produk baru. Form ini mengambil field name, price, dan description
+- Saya kemudian membuat add_product untuk memungkinkan pengguna menambah produk baru. add_product ini juga berfungsi untuk memproses form dan menyimpan produk baru ke dalam database jika form valid.
+- Saya juga mengimplementasikan fitur untuk menampilkan data produk dalam format JSON dan XML menggunakan serializer dari Django.
+- Di urls.py, saya menambahkan path untuk menghubungkan view dengan URL tertentu. Hal ini memungkinkan pengguna untuk mengakses halaman daftar produk, menambahkan produk baru, dan melihat data produk dalam format JSON atau XML.
+- Untuk melindungi aplikasi dari serangan CSRF (Cross Site Request Forgery), saya menambahkan token CSRF di dalam form. Ini dilakukan dengan menyertakan {% csrf_token %} di dalam template add_product.html.
+- Di dalam view add_product, saya menggunakan method is_valid() untuk memvalidasi data form. Method ini memeriksa apakah data yang dimasukkan oleh pengguna sesuai dengan aturan di model. Jika valid, data akan disimpan ke dalam database, jika tidak, pengguna diminta untuk memperbaiki input.
+
