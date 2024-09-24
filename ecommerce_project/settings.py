@@ -27,7 +27,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = ["localhost", "127.0.0.1", "muhammad-rayyan34-ECOMMERCEPROJECT.pbp.cs.ui.ac.id"]
 
-
+LOGIN_URL = 'login'
 # Application definition
 
 INSTALLED_APPS = [
@@ -106,11 +106,11 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
 
 USE_I18N = True
 
 USE_TZ = True
+TIME_ZONE = 'Asia/Jakarta'
 
 
 # Static files (CSS, JavaScript, Images)

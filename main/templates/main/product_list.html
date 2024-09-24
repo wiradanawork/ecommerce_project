@@ -8,6 +8,10 @@
     <h2>{{ data.npm }}</h2>
     <h2>{{ data.kelas }}</h2>
 
+
+    <h2>Welcome, {{ username }}</h2>
+    <p>Last login: {{ last_login }}</p>
+
     <h1>Toko Rayyan</h1>
     <ul>
         <!-- Produk dari database -->
@@ -22,5 +26,8 @@
 
     <!-- Tombol untuk menambah produk baru -->
     <a href="{% url 'add_product' %}">Add Product</a>
+
+    <!-- Tombol untuk logout -->
+    <a href="{% url 'logout' %}">Logout</a>
 </body>
 </html>
