@@ -211,11 +211,81 @@ Django mengingat pengguna yang telah login menggunakan session framework. Saat p
 
 
 
+TUGAS 5
+
+1. Jika terdapat beberapa CSS selector untuk suatu elemen HTML, jelaskan urutan prioritas pengambilan CSS selector tersebut!
+
+    - !important: Digunakan untuk mengoverride semua aturan lainnya.
+        contoh : 
+        p {
+            color: orange !important;
+        }
+
+    - Inline Style: Menggunakan atribut style langsung di dalam elemen HTML 
+        contoh : 
+        <div style="color: green;">Hello World</div>
+
+    - Selector ID: Menggunakan tanda pagar (#) sebelum nama ID.
+        contoh : 
+        #header {
+            background-color: yellow;
+        }
+
+    - Selector Kelas: Selector ini menggunakan titik (.) sebelum nama kelas.
+        contoh : 
+        .text {
+            color: red;
+        }
+
+    - Selector Tag: Merupakan selector yang hanya menggunakan nama tag HTML, seperti div, h1, p
+        contoh : 
+        p {
+            color: blue;
+        }
 
 
+2. Mengapa responsive design menjadi konsep yang penting dalam pengembangan aplikasi web? Berikan contoh aplikasi yang sudah dan belum menerapkan responsive design!
+
+    Responsive design adalah pendektan dalam pengembangan web yang membuat tampilan situs web dapat menyesuaikan diri dengan berbagai ukuran layar dan perangkat. Hak ini penting karena responsive design akan membuat berbagai user dari berbagai perangkat, misalnya hp, tablet, laptop, dll
+
+    - Contoh aplikasi yang sudah menerapkan responsive design: Instagram, Amazon, dan LinkedIn. Semua aplikasi ini dapat diakses dengan baik di perangkat mobile dan desktop.
+
+    - Belum menerapkan responsive design: Situs web lama yang hanya dioptimalkan untuk desktop
+
+3. Jelaskan perbedaan antara margin, border, dan padding, serta cara untuk mengimplementasikan ketiga hal tersebut!
+    - Margin: mengosongkan area di sekitar border (transparan) 
+        contoh : 
+        .box {
+            margin: 20px;
+        }
+
+    - Border: garis tepian yang membungkus konten dan padding-nya
+        contoh : 
+        .box {
+            border: 2px solid black; 
+        }
+
+    Padding: mengosongkan area di sekitar konten (transparan)
+        contoh :
+        .box {
+            padding: 15px; /* Menambahkan padding 15px di semua sisi */
+        }
 
 
-  
+4. Jelaskan konsep flex box dan grid layout beserta kegunaannya!
+    - Flexbox adalah sistem layout satu dimensi yang memungkinkan pengaturan elemen dalam baris (horizontal) atau kolom (vertikal). Flexbox sangat berguna untuk mendistribusikan ruang di antara item dalam container dan mengatur posisi mereka.
+
+    - Grid Layouta= adalah sistem layout dua dimensi yang memungkinkan pengaturan elemen dalam baris dan kolom secara bersamaan. Grid sangat berguna untuk membuat desain yang lebih kompleks dan terstruktur.
 
 
+5. Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step (bukan hanya sekadar mengikuti tutorial)!
 
+    - Saya mulai dengan membuat base.html sebagai template dasar untuk semua halaman di aplikasi. Base template ini berfungsi untuk menyusun struktur HTML yang konsisten dan dapat digunakan oleh halaman lainnya. Saya juga menambahkan CDN Tailwind CSS. Pada base.html, saya memasukkan file navbar (navbar.html) menggunakan {% include %} untuk memudahkan navigasi pada halaman lain, kecuali pada halaman login karena navbar tidak diinginkan di sana. Pada base.html saya juga menambahkan logika kondisi agar navbar tidak muncul pada saat halaman login dan register
+
+    - Setelah itu saya membuat halaman login dengan tampilan sederhana dan menggunakan Tailwind untuk styling komponen seperti tombol dan form input.
+
+    - Serupa dengan halaman login, saya membuat halaman register menggunakan Tailwind untuk memberikan tampilan yang mirip dengan halaman login.
+
+    - Setelah itu saya membuat product_edit dan delete_product di views.py untuk mengedit dan mendelete product,Saya kemudian menambahkan URL patterns di file urls.py untuk kedua view tersebut (product_edit dan delete_product). Dengan menambahkan URL, pengguna dapat mengakses halaman edit dan menghapus produk sesuai dengan ID produk yang diinginkan.lalu saya juga membuat product_edit.html untuk menghandle edit product
+
+    - Dalam pengembangan ini, saya memastikan bahwa semua elemen seperti navbar, form, dan tombol dapat beradaptasi dengan baik di berbagai ukuran layar, baik desktop maupun mobile. Tailwind CSS memberikan utility class yang sangat membantu untuk mengatur tampilan yang responsif. Pada navbar, saya menggunakan teknik flexbox dan Tailwind untuk menampilkan menu navigasi berbeda antara tampilan desktop dan mobile, termasuk menambahkan tombol toggle untuk menampilkan menu di layar kecil.

@@ -7,7 +7,7 @@ from django.core import serializers
 from .models import Product
 from .forms import ProductForm, RegisterForm
 from django.utils.timezone import localtime
-
+from django.shortcuts import get_object_or_404
 # Fungsi untuk mendaftarkan pengguna baru
 def register(request):
     if request.method == 'POST':
@@ -73,6 +73,27 @@ def product_list(request):
     
     # Render template product_list.html dengan data produk, informasi pengguna, dan last_login
     return render(request, 'main/product_list.html', {'products': products, 'data': data, 'last_login': last_login, 'username': username})
+
+# Fungsi untuk mengedit produk
+def product_edit(request, pk):
+    product = get_object_or_404(Product, pk=pk)
+    
+    if request.method == 'POST':
+        form = ProductForm(request.POST, instance=product)
+        if form.is_valid():
+            form.save()
+            return redirect('product_list')  # Arahkan kembali ke daftar produk setelah berhasil
+    else:
+        form = ProductForm(instance=product)
+    
+    return render(request, 'main/product_edit.html', {'form': form, 'product': product})
+
+# Fungsi untuk menghapus produk
+def delete_product(request, id):
+    product = get_object_or_404(Product, id=id)
+    product.delete()
+    # Redirect ke halaman daftar produk setelah menghapus
+    return redirect('product_list')
 
 # Fungsi untuk menambah produk baru
 def add_product(request):
