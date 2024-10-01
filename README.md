@@ -209,6 +209,9 @@ Django mengingat pengguna yang telah login menggunakan session framework. Saat p
         product.user = request.user
         product.save()
 
+![Screenshot (4103)](https://github.com/user-attachments/assets/fc977051-bfa3-4f72-905d-b418f05812ba)
+![Screenshot (4104)](https://github.com/user-attachments/assets/3f79b28e-6c7d-4a29-a1de-49cdf3e5c7fc)
+
 
 
 TUGAS 5
