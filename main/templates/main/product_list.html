@@ -9,39 +9,132 @@ Daftar Produk
     <h2 class="text-2xl font-semibold">Daftar Produk</h2>
     
     <!-- Tombol untuk menambah produk -->
-    <a href="{% url 'add_product' %}" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
-        Tambah Produk
-    </a>
+    <button id="add-product-button" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Tambah Produk</button>
 </div>
 
-<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-    {% if products %}
-        {% for product in products %}
-            <div class="bg-white border border-gray-200 rounded-lg shadow-md overflow-hidden">
-                <!-- Bagian body card -->
-                <div class="p-4">
-                    <h3 class="text-xl font-bold mb-2">{{ product.name }}</h3>
-                    <p class="text-gray-700">Harga: Rp {{ product.price }}</p>
-                    <p class="text-gray-600 mt-2">{{ product.description }}</p>
-                </div>
-                
-                <!-- Tombol edit dan hapus -->
-                <div class="p-4 border-t border-gray-200 bg-gray-50 flex justify-between">
-                    <a href="{% url 'product_edit' product.id %}" class="bg-yellow-500 text-white py-2 px-4 rounded-md hover:bg-yellow-600">Edit</a>
-                    <form action="{% url 'delete_product' product.id %}" method="POST" class="inline">
-                        {% csrf_token %}
-                        <button type="submit" class="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600">
-                            Hapus
-                        </button>
-                    </form>
-                </div>
-            </div>
-        {% endfor %}
-        {% else %}
-        <div class="col-span-full text-center">
-            <img src="https://w7.pngwing.com/pngs/278/860/png-transparent-red-x-illustration-check-mark-cross-red-tick-cross-miscellaneous-angle-cross.png" alt="No Products" class="mx-auto mb-4 h-24 w-24">
-            <p class="text-gray-500">Tidak ada produk yang terdaftar. Silakan tambahkan produk baru.</p>
-        </div>
-    {% endif %}
+<!-- Kontainer untuk menampilkan produk secara dinamis -->
+<div id="product-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+    <!-- Produk akan dimuat secara dinamis oleh JavaScript -->
 </div>
+
+<!-- Modal untuk menambah produk -->
+<div id="add-product-modal" class="hidden fixed z-50 inset-0 overflow-y-auto">
+    <div class="flex items-center justify-center min-h-screen px-4">
+        <div class="bg-white p-6 rounded-lg shadow-lg max-w-md w-full">
+            <h2 class="text-xl font-semibold mb-4">Tambah Produk</h2>
+            <form id="add-product-form">
+                <input type="text" id="product-name" name="name" placeholder="Nama Produk" required>
+                <input type="number" id="product-price" name="price" placeholder="Harga Produk" required>
+                <textarea id="product-description" name="description" placeholder="Deskripsi Produk" required></textarea>
+                <button type="submit">Simpan</button>
+                <button type="button" id="close-modal-button" class="bg-gray-500 text-white py-2 px-4 rounded hover:bg-gray-600 ml-2">Batal</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Fungsi untuk menutup modal
+    function closeModal() {
+        document.getElementById('add-product-modal').classList.add('hidden');
+    }
+
+    // Menampilkan modal saat tombol 'Tambah Produk' diklik
+    document.getElementById('add-product-button').addEventListener('click', function() {
+        document.getElementById('add-product-modal').classList.remove('hidden');
+    });
+
+    // Menutup modal saat tombol 'Batal' diklik
+    document.getElementById('close-modal-button').addEventListener('click', function() {
+        closeModal();
+    });
+
+    // Fungsi untuk mengambil dan menampilkan produk menggunakan AJAX GET
+   // Fungsi untuk mengambil dan menampilkan produk menggunakan AJAX GET
+async function fetchProducts() {
+    const response = await fetch("{% url 'show_json' %}");
+    
+    // Parsing respons JSON
+    const rawProducts = await response.json();
+    
+    console.log('Produk yang diambil:', rawProducts);  // Debugging
+
+    // Jika respons adalah string JSON, parsing ulang dengan JSON.parse
+    let products;
+    if (typeof rawProducts === 'string') {
+        products = JSON.parse(rawProducts);
+    } else {
+        products = rawProducts;
+    }
+
+    // Cek apakah produk adalah array dan tampilkan, jika bukan array, berikan pesan error
+    if (Array.isArray(products)) {
+        displayProducts(products);
+    } else {
+        console.error('Produk tidak dalam bentuk array:', products);
+    }
+}
+
+
+    // Fungsi untuk menampilkan produk di halaman
+    function displayProducts(products) {
+        const productContainer = document.getElementById('product-container');
+        productContainer.innerHTML = '';  // Kosongkan kontainer sebelum menambahkan produk baru
+
+        products.forEach(product => {
+            const productCard = `
+                <div class="bg-white border border-gray-200 rounded-lg shadow-md overflow-hidden">
+                    <div class="p-4">
+                        <h3 class="text-xl font-bold mb-2">${product.fields.name}</h3>
+                        <p class="text-gray-700">Harga: Rp ${product.fields.price}</p>
+                        <p class="text-gray-600 mt-2">${product.fields.description}</p>
+                    </div>
+                    <div class="p-4 border-t border-gray-200 bg-gray-50 flex justify-between">
+                        <button class="bg-yellow-500 text-white py-2 px-4 rounded-md hover:bg-yellow-600">Edit</button>
+                        <button class="bg-red-500 text-white py-2 px-4 rounded-md hover:bg-red-600">Hapus</button>
+                    </div>
+                </div>
+            `;
+            productContainer.innerHTML += productCard;
+        });
+    }
+
+    // Panggil fetchProducts saat halaman dimuat
+    window.onload = fetchProducts;
+
+    // Fungsi AJAX POST untuk menambahkan produk
+    document.getElementById('add-product-form').addEventListener('submit', async function(e) {
+        e.preventDefault();  // Mencegah reload halaman
+
+        // Ambil data dari form
+        const name = document.getElementById('product-name').value;
+        const price = document.getElementById('product-price').value;
+        const description = document.getElementById('product-description').value;
+
+        // Kirim data menggunakan AJAX POST
+        const response = await fetch("{% url 'create_product_ajax' %}", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': '{{ csrf_token }}' // Pastikan CSRF token disertakan
+            },
+            body: JSON.stringify({
+                name: name,
+                price: price,
+                description: description
+            })
+        });
+
+        const data = await response.json();
+
+        if (data.status === 'success') {
+            fetchProducts();  // Refresh daftar produk setelah berhasil menambah
+            document.getElementById('add-product-form').reset();  // Reset form setelah sukses
+            closeModal();  // Tutup modal setelah produk berhasil ditambahkan
+        } else {
+            alert('Gagal menambah produk.');
+        }
+    });
+</script>
+
 {% endblock content %}

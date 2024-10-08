@@ -8,6 +8,10 @@ from .models import Product
 from .forms import ProductForm, RegisterForm
 from django.utils.timezone import localtime
 from django.shortcuts import get_object_or_404
+from django.views.decorators.csrf import csrf_exempt
+from django.http import JsonResponse
+import json
+
 # Fungsi untuk mendaftarkan pengguna baru
 def register(request):
     if request.method == 'POST':
@@ -46,6 +50,7 @@ def login_view(request):
         form = AuthenticationForm()
     # Render template login.html dengan form login
     return render(request, 'main/login.html', {'form': form})
+
 
 # Fungsi untuk logout pengguna
 def logout_view(request):
@@ -112,10 +117,11 @@ def add_product(request):
     return render(request, 'main/add_product.html', {'form': form})
 
 # View untuk menampilkan semua produk dalam format JSON
+@login_required
 def show_json(request):
-    products = Product.objects.all()
-    # Mengembalikan data produk dalam format JSON
-    return HttpResponse(serializers.serialize('json', products), content_type='application/json')
+    products = Product.objects.filter(user=request.user)
+    data = serializers.serialize('json', products)
+    return JsonResponse(data, safe=False)
 
 # View untuk menampilkan semua produk dalam format XML
 def show_xml(request):
@@ -134,3 +140,24 @@ def show_xml_by_id(request, id):
     product = Product.objects.filter(pk=id)
     # Mengembalikan data produk dalam format XML
     return HttpResponse(serializers.serialize("xml", product), content_type="application/xml")
+    
+@csrf_exempt
+@login_required
+def create_product_ajax(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)  # Mengambil data JSON dari request
+        form = ProductForm(data)
+        if form.is_valid():
+            product = form.save(commit=False)
+            product.user = request.user
+            product.save()
+            return JsonResponse({
+                'status': 'success',
+                'product': {
+                    'id': product.id,
+                    'name': product.name,
+                    'price': product.price,
+                    'description': product.description
+                }
+            })
+    return JsonResponse({'status': 'failed'}, status=400)

@@ -292,3 +292,39 @@ TUGAS 5
     - Setelah itu saya membuat product_edit dan delete_product di views.py untuk mengedit dan mendelete product,Saya kemudian menambahkan URL patterns di file urls.py untuk kedua view tersebut (product_edit dan delete_product). Dengan menambahkan URL, pengguna dapat mengakses halaman edit dan menghapus produk sesuai dengan ID produk yang diinginkan.lalu saya juga membuat product_edit.html untuk menghandle edit product
 
     - Dalam pengembangan ini, saya memastikan bahwa semua elemen seperti navbar, form, dan tombol dapat beradaptasi dengan baik di berbagai ukuran layar, baik desktop maupun mobile. Tailwind CSS memberikan utility class yang sangat membantu untuk mengatur tampilan yang responsif. Pada navbar, saya menggunakan teknik flexbox dan Tailwind untuk menampilkan menu navigasi berbeda antara tampilan desktop dan mobile, termasuk menambahkan tombol toggle untuk menampilkan menu di layar kecil.
+
+
+Tugas 6
+1. Jelaskan manfaat dari penggunaan JavaScript dalam pengembangan aplikasi web!
+JavaScript memungkinkan halaman web menjadi interaktif, memperkaya pengalaman pengguna dengan elemen seperti animasi, validasi form, dropdown menus, dan lain-lain.Dengan menggunakan JavaScript, kita bisa melakukan perubahan pada halaman tanpa harus melakukan reload seluruh halaman (AJAX), sehingga interaksi menjadi lebih cepat dan responsif.
+
+2. Fungsi dari Penggunaan await ketika Menggunakan fetch()
+Penggunaan await dalam fetch() berfungsi untuk menunggu hasil dari operasi asynchronous sebelum melanjutkan eksekusi kode berikutnya. Jika await tidak digunakan, JavaScript akan melanjutkan eksekusi instruksi berikutnya tanpa menunggu proses fetch() selesai.
+
+Jika kita tidak menggunakan await, maka kita berisiko mencoba untuk menggunakan data yang belum diterima dari server, sehingga menyebabkan error atau tindakan yang tidak diharapkan dalam aplikasi.
+
+3. Mengapa Menggunakan Decorator csrf_exempt pada View yang Digunakan untuk AJAX POST?
+Decorator csrf_exempt digunakan untuk menonaktifkan validasi CSRF (Cross-Site Request Forgery) pada view tertentu. Pada permintaan POST biasa, Django secara default memerlukan token CSRF untuk mencegah serangan CSRF. Namun, dalam beberapa kasus AJAX POST request (terutama yang datang dari aplikasi SPA atau request dari sumber eksternal), kita mungkin perlu menonaktifkan pemeriksaan ini untuk menghindari error.
+
+Namun, menggunakan csrf_exempt harus dilakukan dengan hati-hati dan hanya jika kita sudah memastikan bahwa permintaan tersebut aman, karena mengabaikan CSRF dapat membuka potensi risiko keamanan.
+
+4. Mengapa Pembersihan Data Input Pengguna Dilakukan di Backend?
+Pembersihan data input pengguna dilakukan di backend karena alasan keamanan. Jika pembersihan hanya dilakukan di frontend, seorang pengguna yang berniat jahat dapat dengan mudah memanipulasi data input sebelum dikirimkan ke server (misalnya dengan menggunakan developer tools di browser). Dengan melakukan pembersihan di backend, kita dapat memastikan bahwa data yang masuk ke dalam sistem kita sudah diverifikasi dan bebas dari potensi ancaman seperti serangan injection atau data yang tidak valid.
+
+5. Implementasi Checklist secara Step-by-Step
+Menyiapkan Struktur Backend:
+    - Menambahkan model Mood di models.py untuk menyimpan data mood pengguna.
+    - Menambahkan views baru untuk menangani request AJAX GET dan POST.
+
+Implementasi AJAX GET:
+    - Mengubah view untuk mengirimkan data mood milik pengguna yang sedang login dalam format JSON.
+    - Menggunakan fetch API pada JavaScript untuk melakukan AJAX GET dan menampilkan data mood ke halaman web secara dinamis.
+
+Implementasi AJAX POST:
+    - Membuat modal dan form input untuk menambah mood baru.
+    - Menghubungkan form input dengan AJAX POST request menggunakan fetch API.
+    - Memastikan bahwa modal otomatis ditutup dan daftar mood di halaman diperbarui setelah mood baru berhasil ditambahkan.
+
+Mengatur Keamanan AJAX POST:
+    - Menggunakan decorator csrf_exempt pada view untuk menonaktifkan validasi CSRF agar AJAX POST bisa dilakukan.
+    - Menyediakan validasi input di backend untuk memastikan data yang masuk aman dan valid.
