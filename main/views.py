@@ -13,43 +13,61 @@ from django.http import JsonResponse
 import json
 
 # Fungsi untuk mendaftarkan pengguna baru
+from django.http import HttpResponse
+
+@csrf_exempt
 def register(request):
+    if request.method == 'OPTIONS':
+        # Tanggapi preflight request dengan izin metode
+        response = HttpResponse()
+        response["Access-Control-Allow-Origin"] = "*"
+        response["Access-Control-Allow-Methods"] = "POST, OPTIONS"
+        response["Access-Control-Allow-Headers"] = "Content-Type"
+        return response
+
     if request.method == 'POST':
-        form = RegisterForm(request.POST)
-        if form.is_valid():
-            # Jika form valid, simpan data pengguna baru ke database
-            form.save()
-            # Redirect ke halaman login setelah pendaftaran berhasil
-            return redirect('login')
-    else:
-        form = RegisterForm()
-    # Render template register.html dengan form pendaftaran
-    return render(request, 'main/register.html', {'form': form})
+        if request.headers.get('Content-Type') == 'application/json':
+            data = json.loads(request.body)
+            form = RegisterForm(data)
+            if form.is_valid():
+                form.save()
+                return JsonResponse({'status': 'success', 'message': 'User registered successfully'}, status=201)
+            else:
+                return JsonResponse({'status': 'failed', 'message': form.errors}, status=400)
+    return JsonResponse({'status': 'failed', 'message': 'Invalid request method'}, status=405)
+
+
 
 # Fungsi untuk login pengguna
+@csrf_exempt
 def login_view(request):
     if request.method == 'POST':
-        form = AuthenticationForm(request, data=request.POST)
-        if form.is_valid():
-            # Mengambil username dan password dari form yang telah divalidasi
-            username = form.cleaned_data.get('username')
-            password = form.cleaned_data.get('password')
-            # Autentikasi pengguna berdasarkan username dan password
+        if request.headers.get('Content-Type') == 'application/json':
+            data = json.loads(request.body)
+            username = data.get('username')
+            password = data.get('password')
             user = authenticate(username=username, password=password)
             if user is not None:
-                # Login pengguna jika autentikasi berhasil
                 login(request, user)
-                response = redirect('product_list')
-                
-                # Mengambil last_login dan mengubahnya ke waktu lokal
-                last_login_time = localtime(user.last_login).strftime('%Y-%m-%d %H:%M:%S')
-                # Menyimpan last_login dalam cookie
-                response.set_cookie('last_login', last_login_time)
-                return response
+                return JsonResponse({'status': 'success', 'message': 'Login successful'}, status=200)
+            else:
+                return JsonResponse({'status': 'failed', 'message': 'Invalid username or password'}, status=400)
+        else:
+            form = AuthenticationForm(request, data=request.POST)
+            if form.is_valid():
+                username = form.cleaned_data.get('username')
+                password = form.cleaned_data.get('password')
+                user = authenticate(username=username, password=password)
+                if user is not None:
+                    login(request, user)
+                    response = redirect('product_list')
+                    last_login_time = localtime(user.last_login).strftime('%Y-%m-%d %H:%M:%S')
+                    response.set_cookie('last_login', last_login_time)
+                    return response
     else:
         form = AuthenticationForm()
-    # Render template login.html dengan form login
     return render(request, 'main/login.html', {'form': form})
+
 
 
 # Fungsi untuk logout pengguna
@@ -145,7 +163,7 @@ def show_xml_by_id(request, id):
 @login_required
 def create_product_ajax(request):
     if request.method == 'POST':
-        data = json.loads(request.body)  # Mengambil data JSON dari request
+        data = json.loads(request.body)
         form = ProductForm(data)
         if form.is_valid():
             product = form.save(commit=False)
@@ -159,5 +177,7 @@ def create_product_ajax(request):
                     'price': product.price,
                     'description': product.description
                 }
-            })
-    return JsonResponse({'status': 'failed'}, status=400)
+            }, status=201)
+        else:
+            return JsonResponse({'status': 'failed', 'errors': form.errors}, status=400)
+    return JsonResponse({'status': 'failed', 'message': 'Invalid request method'}, status=405)

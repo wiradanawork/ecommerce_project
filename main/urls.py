@@ -4,7 +4,7 @@ from .views import product_list, add_product, show_json, show_xml, show_json_by_
 urlpatterns = [
     path('', product_list, name='product_list'),
     path('products/add/', add_product, name='add_product'),
-     path('product/<int:pk>/edit/', product_edit, name='product_edit'),
+    path('product/<int:pk>/edit/', product_edit, name='product_edit'),
     path('products/delete/<int:id>/', delete_product, name='delete_product'),
     path('products/json/', show_json, name='show_json'),
     path('products/xml/', show_xml, name='show_xml'),

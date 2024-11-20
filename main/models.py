@@ -19,3 +19,8 @@ class Product(models.Model):
     # Metode ini mengembalikan nama produk sebagai representasi string
     def __str__(self):
         return self.name
+
+
+
+
+    
